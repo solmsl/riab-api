@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static("client", {extensions: ["html", "css", "js"]}));
 
 // CONECTAMOS LAS RUTAS:
-const rescatistas = require('./rutas/rescatistass');
+const rescatistas = require('./rutas/rescatistas');
 const mascotas = require('./rutas/mascotas');
 // const personas = require('./rutas/personas');
 // const historial = require('./rutas/historial');
