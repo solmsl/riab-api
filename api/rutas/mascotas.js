@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 //Importamos controlador
-const controladorMascota = require('../controladores/mascotasControlador')
+const controladorMascota = require('../controllers/mascotasController')
 
 //Importamos middleware
-const verificarToken = require('../middleware/authToken');
+const verificarToken = require('../middlewares/auth');
 
 // localhost:3000/mascotas/
 router.get('/', verificarToken,controladorMascota.obtenerMascotas);
