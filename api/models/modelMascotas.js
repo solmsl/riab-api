@@ -8,7 +8,7 @@ const mascotas = sequelize.define('mascotas', {
     primaryKey: true,
     autoIncrement: true
   },
-  nombre_apodo: {
+  nombreApodo: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -54,12 +54,12 @@ const mascotas = sequelize.define('mascotas', {
       },
     }
   },
-  anio_nacimiento: {
-    type: DataTypes.INTEGER,
+  anioNacimiento: {
+    type: DataTypes.STRING,
     allowNull: false,
     validate: {
       isInt: {
-        msg: 'El año de nacimiento debe ser un número entero.'
+        msg: 'El año de nacimiento debe ser una de las opciones desingnadas.'
       },
     }
   }
