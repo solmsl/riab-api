@@ -1,139 +1,140 @@
-// Importamos modelo de mascotas
-const mascota = require('../models/modelMascotas');
+const { body, validationResult } = require('express-validator');
+const mascotas = require('../models/modelMascotas');
 
-//funcion de validacion
-const validarMascota = (data) => {
-  const { nombre_apodo, especie, raza, color, estado_salud, anio_nacimiento } = data;
-  
-  if (!nombre_apodo || nombre_apodo.length < 2 || nombre_apodo.length > 50 || !/^[a-zA-Z\s]+$/.test(nombre_apodo)) {
-    return "Nombre-apodo invalido. Solo se permiten letras.";
-  }
-  if (!especie || especie.length < 2 || especie.length > 50 || !/^[a-zA-Z\s]+$/.test(especie)) {
-    return "Especie invalida. Solo se permiten letras.";
-  }
-  if (!raza || raza.length < 2 || raza.length > 50 || !/^[a-zA-Z\s]+$/.test(raza)) {
-    return "Raza invalida. Solo se permiten letras.";
-  }
-  if (!color || color.length < 2 || color.length > 30 || !/^[a-zA-Z\s]+$/.test(color)) {
-    return "Color invalido. Solo se permiten letras.";
-  }
-  if (!estado_salud || estado_salud.length < 5 || !/^[a-zA-Z\s]+$/.test(estado_salud)) {
-    return "Estado de salud invalido. Solo se permiten letras y debe tener al menos 5 caracteres.";
-  }
-  if (!anio_nacimiento || isNaN(anio_nacimiento) || anio_nacimiento < 1900 || anio_nacimiento > new Date().getFullYear()) {
-    return "Anio de nacimiento invalido.";
-  }
-  return null; // No hay errores
-};
+// Validaciones para crear y actualizar una mascota
+const validarMascota = [
+  body('nombreApodo').notEmpty().withMessage('El nombre o apodo es requerido.'),
+  body('especie').notEmpty().withMessage('La especie es requerida.'),
+  body('raza').notEmpty().withMessage('La raza es requerida.'),
+  body('color').notEmpty().withMessage('El color es requerido.'),
+  body('anioNacimiento').notEmpty().withMessage('El año de nacimiento es requerido.')
+];
 
-const obtenerMascotas = async (req, res) => {
-  try {
-    const masc = await mascota.findAll();
-    return res.json(masc);
-  } catch (error) {
-    return res.status(500).json({ err: "Internal Server Error" });
-  }
-}
-
-const obtenerMascotasId = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const masc = await mascota.findByPk(id);
-
-    if (!masc) {
-      return res.status(404).json({ message: "Mascota no encontrada." });
-    }
-  
-    return res.status(200).json(masc);
-  } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
+// Crear nueva mascota
 const crearMascotas = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, message: errors.array() });
+  }
+
   try {
-    const {nombre_apodo, especie,  raza, color, estado_salud, anio_nacimiento } = req.body;
-    
-    const error = validarMascota(req.body);
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const mascotaNuevo = await mascota.create({ 
-      nombre_apodo, especie, raza, color, estado_salud, anio_nacimiento 
-    });
-
-    console.log(mascotaNuevo);
-
-    mascotaNuevo.save();
-
-    return res.status(201).json({
+    const nuevaMascota = await mascotas.create(req.body);
+    res.status(201).json({
       success: true,
-      message: "Mascota creada!",
-      data: mascotaNuevo
+      message: 'Mascota registrada exitosamente',
+      mascota: nuevaMascota
     });
-
   } catch (error) {
-    return console.error(error);
-    // return res.status(500).json({ 
-    //   success: false,
-    //   error: "Internal Server Error" });
+    res.status(400).json({
+      success: false,
+      message: error.errors ? error.errors.map(e => e.message).join(', ') : 'Error al registrar la mascota'
+    });
   }
 };
 
-const actualizarMascotas = async (req, res) => {
+// Obtener todas las mascotas
+const getAllMascotas = async (req, res) => {
   try {
-    const pasarid = req.params.id;
-    const { nombre_apodo, especie, raza, color, estado_salud, anio_nacimiento } = req.body;
-
-    const error = validarMascota(req.body);
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    const buscarMascota = await mascota.findOne({ where: { id: pasarid } });
-
-    if (!buscarMascota) {
-      return res.status(404).json({ message: "Mascota no encontrada." });
-    }
-
-    const actuMascota = await buscarMascota.update({
-      nombre_apodo, especie, raza, color, estado_salud, anio_nacimiento 
-    });
-    
+    const listaMascotas = await mascotas.findAll();
     return res.status(200).json({
-      message: "Mascota actualizada con éxito!",
-      data: actuMascota
+      success: true,
+      data: listaMascotas
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error('Error al obtener mascotas:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
   }
 };
 
-const borrarMascotas = async (req, res) => {
+// Obtener una mascota por ID
+const getMascotaById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const id = req.params.id;
-    const buscarMascota = await mascota.findOne({ where: { id } });
-
-    if (!buscarMascota) {
-      return res.status(404).json({ message: "Mascota no encontrada." });
+    const mascota = await mascotas.findByPk(id);
+    if (!mascota) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mascota no encontrada'
+      });
     }
-
-    await buscarMascota.destroy();
     return res.status(200).json({
-      message: "Mascota eliminada con éxito!"
+      success: true,
+      data: mascota
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error('Error al obtener mascota:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
   }
-}
+};
 
+// Actualizar una mascota
+const actualizarMascota = async (req, res) => {
+  const { id } = req.params;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, message: errors.array() });
+  }
+
+  try {
+    const [updated] = await mascotas.update(req.body, {
+      where: { id }
+    });
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mascota no encontrada'
+      });
+    }
+    const mascotaActualizada = await mascotas.findByPk(id);
+    return res.status(200).json({
+      success: true,
+      message: 'Mascota actualizada exitosamente',
+      mascota: mascotaActualizada
+    });
+  } catch (error) {
+    console.error('Error al actualizar mascota:', error);
+    return res.status(400).json({
+      success: false,
+      message: error.errors ? error.errors.map(e => e.message).join(', ') : 'Error al actualizar la mascota'
+    });
+  }
+};
+
+// Eliminar una mascota
+const eliminarMascota = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await mascotas.destroy({
+      where: { id }
+    });
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mascota no encontrada'
+      });
+    }
+    return res.status(204).json({ success: true });
+  } catch (error) {
+    console.error('Error al eliminar mascota:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Exportar funciones del controlador
 module.exports = {
-  obtenerMascotas,
-  obtenerMascotasId,
   crearMascotas,
-  actualizarMascotas,
-  borrarMascotas
-}
+  getAllMascotas,
+  getMascotaById,
+  actualizarMascota,
+  eliminarMascota,
+  validarMascota
+};
