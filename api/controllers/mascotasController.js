@@ -12,7 +12,7 @@ const validarMascota = [
 
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
-  // console.log("holaa llegaron los datos");
+  console.log("holaa llegaron los datos");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, message: errors.array() });
