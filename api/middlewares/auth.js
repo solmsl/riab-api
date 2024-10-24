@@ -3,8 +3,9 @@ const dotenv = require('dotenv');
 dotenv.config({path: "./vars/.env"});
 
 const verificacion = (req, res, next) => {
-  const token = req.cookies.token || req.headers["authorization"];
-
+  const authHeader = req.cookies.token || req.headers["authorization"];
+  const token = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
+  
   if (!token) {
     return res.status(401).json({ error: "Acceso denegado. No hay token." });
   }
