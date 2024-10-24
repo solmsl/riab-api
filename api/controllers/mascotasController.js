@@ -12,11 +12,25 @@ const validarMascota = [
 
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
+  try {
+    const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
+    const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
 
+    return res.status(200).json({
+      success: true,
+      data: mascota
+    });
+  } catch (error) {
+    console.error('Error al crear mascota:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
   //const nuevaMascota = await mascotas.create(req.body);
-  const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
-  const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
-  res.json(mascota);
+  // const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
+  // const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
+  // res.json(mascota);
 };
 
 // Obtener todas las mascotas
