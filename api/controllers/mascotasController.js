@@ -137,6 +137,5 @@ module.exports = {
   getAllMascotas,
   getMascotaById,
   actualizarMascota,
-  eliminarMascota,
-  validarMascota
+  eliminarMascota
 };
