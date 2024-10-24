@@ -4,14 +4,11 @@ const router = express.Router();
 //Importamos controlador
 const controladorMascota = require('../controllers/mascotasController')
 
-//Importamos middleware
-const verificarToken = require('../middlewares/auth');
-
 // localhost:3000/mascotas/
-router.get('/', verificarToken,controladorMascota.obtenerMascotas);
-router.get("/obtenerId/:id", verificarToken, controladorMascota.obtenerMascotasId);
+router.get('/', controladorMascota.getAllMascotas);
+router.get("/:id", controladorMascota.getMascotaById);
 router.post('/registro', controladorMascota.crearMascotas);
-router.put('/:id', verificarToken, controladorMascota.actualizarMascotas);
-router.delete('/:id', verificarToken, controladorMascota.borrarMascotas);
+router.put('/:id', controladorMascota.actualizarMascota);
+router.delete('/:id', controladorMascota.eliminarMascota);
 
 module.exports = router

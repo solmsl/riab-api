@@ -12,24 +12,11 @@ const validarMascota = [
 
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, message: errors.array() });
-  }
 
-  try {
-    const nuevaMascota = await mascotas.create(req.body);
-    res.status(201).json({
-      success: true,
-      message: 'Mascota registrada exitosamente',
-      mascota: nuevaMascota
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.errors ? error.errors.map(e => e.message).join(', ') : 'Error al registrar la mascota'
-    });
-  }
+  //const nuevaMascota = await mascotas.create(req.body);
+  const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
+  const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
+  res.json(mascota);
 };
 
 // Obtener todas las mascotas
