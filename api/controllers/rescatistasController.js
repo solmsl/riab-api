@@ -12,12 +12,16 @@ const salt = Number(process.env.SALT);
 const Rescatista = require('../models/modelRescatistas');
 
 const obtenerTodos = async (req, res) => {
-    try {
-      const Resc = await Rescatista.findAll();
-      return res.json(Resc)
-    } catch (error) {
-      return res.json({err: error})
-    }
+  try {
+    const Resc = await Rescatista.findAll();
+
+    const objResc = Resc.toJSON();
+    delete objResc.passw;
+
+    return res.json(objResc)
+  } catch (error) {
+    return res.json({err: error})
+  }
 }
 
 const obtener = async (req, res) => {
@@ -33,10 +37,13 @@ const obtener = async (req, res) => {
       });
     }
 
+    const objResc = resc.toJSON();
+    delete objResc.passw;
+
     return res.status(200).json({
       ok: true,
       success: true,
-      data: resc
+      data: objResc
     });
   } catch (error) {
     return res.status(500).json({error: "Internal Server Error"})
@@ -93,11 +100,7 @@ const crear = async (req, res) => {
       const errores = error.errors.map(err => err.message);
       return res.status(400).json({ error: errores });
     }
-    console.log(error);
-
-    return res.status(500).json({ 
-      success: false,
-      error: "Internal Server Error" });
+    return console.log(error);
   }
 }
 
