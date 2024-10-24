@@ -18,6 +18,7 @@ const crearMascotas = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      message: 'Mascota creada con éxito!',
       data: mascota
     });
   } catch (error) {
