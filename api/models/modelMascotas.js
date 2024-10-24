@@ -58,8 +58,8 @@ const mascotas = sequelize.define('mascotas', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      isInt: {
-        msg: 'El año de nacimiento debe ser una de las opciones desingnadas.'
+      notEmpty: {
+        msg: 'El campo año de nacimiento no puede estar vacío'
       },
     }
   }
