@@ -17,21 +17,24 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.static("client", {extensions: ["html", "css", "js"]}));
 
-// CONECTAMOS LAS RUTAS:
+// Ruta RESCATISTAS
 const rescatistas = require('./rutas/rescatistas');
-const mascotas = require('./rutas/mascotas');
-// const personas = require('./rutas/personas');
-// const historial = require('./rutas/historial');
-
-// Ruta RESCATISTAS (Sol :D)
 app.use('/rescatistas', rescatistas);
-// Ruta MASCOTAS (Mica :D)
+
+// Ruta MASCOTAS
+const mascotas = require('./rutas/mascotas');
 app.use('/mascotas', mascotas);
-// // Ruta PERSONAS (Sol :D)
+
+// en discusion
+// Ruta PERSONAS
+// const personas = require('./rutas/personas');
 // app.use('/personas', personas);
-// // Ruta HISTORIAL MEDICO (Cande :D)
+
+// Ruta HISTORIAL MEDICO
+// const historial = require('./rutas/historial');
 // app.use('/historial', historial);
 
 // Ruta INICIO
