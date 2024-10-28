@@ -43,6 +43,6 @@ app.get('/', (req, res) => {
 });
 
 // Mensaje por consola de que todo anda joya
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Mi aplicacion esta funcionando en http://localhost:${process.env.PORT || 3000}`);
+app.listen(3000, () => {
+  console.log(`Mi aplicacion esta funcionando en http://localhost:${3000}`);
 })
