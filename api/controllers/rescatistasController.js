@@ -4,7 +4,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 //libreria para acceder a las variables de entorno
 const dotenv = require('dotenv');
-dotenv.config({path: "../vars/.env"});
+dotenv.config({path: "./vars/.env"});
 
 const salt = Number(process.env.SALT);
 
