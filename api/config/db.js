@@ -2,7 +2,9 @@ const { Sequelize } = require("sequelize-cockroachdb");
 const dotenv = require('dotenv');
 dotenv.config({path: "./vars/.env"});
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres'
+});
 
 (async () => {
   try {
