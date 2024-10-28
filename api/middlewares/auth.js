@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-dotenv.config({path: "./vars/.env"});
+dotenv.config({path: "../vars/.env"});
 
 const verificacion = (req, res, next) => {
   const authHeader = req.cookies.token || req.headers["authorization"];

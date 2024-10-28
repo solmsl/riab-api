@@ -1,6 +1,8 @@
 const { Sequelize } = require("sequelize-cockroachdb");
+const dotenv = require('dotenv');
+dotenv.config({path: "../vars/.env"});
 
-const sequelize = new Sequelize("postgresql://sole:try1nQB6z9dSwvzvDbUWDA@riab-cluster-4200.j77.aws-us-east-1.cockroachlabs.cloud:26257/riab-bd?sslmode=verify-full");
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 (async () => {
   try {
