@@ -66,12 +66,12 @@ const mascotas = sequelize.define('mascotas', {
 }, { timestamps: false });
 
 // Sincronización del modelo con la base de datos
-mascotas.sync({ force: false })
-  .then(() => {
-    console.log('Modelo de mascotas sincronizado correctamente');
-  })
-  .catch(err => {
-    console.error('Error al sincronizar el modelo de mascotas:', err);
-  });
+// mascotas.sync({ force: false })
+//   .then(() => {
+//     console.log('Modelo de mascotas sincronizado correctamente');
+//   })
+//   .catch(err => {
+//     console.error('Error al sincronizar el modelo de mascotas:', err);
+//   });
 
 module.exports = mascotas;

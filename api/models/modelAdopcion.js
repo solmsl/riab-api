@@ -2,19 +2,26 @@ const { Sequelize } = require('sequelize');
 const db = require('../config/db');
 
 /**
- * Modelo de los Rescatistas que se almacenan en la base de datos.
- * @property {number} dni - DNI del Rescatista.
- * @property {string} nombre - El nombre del rescatista.
- * @property {string} apellido - El apellido del rescatista.
- * @property {number} telefono - telefono del Rescatista.
- * @property {string} direccion - La direccion del rescatista.
- * @property {string} genero - género del rescatista.
- * @property {string} email - El correo electronico del rescatista.
- * @property {string} passw - contraseña de la cuenta del rescatista.
+ * Modelo del formulario deadopcion que se almacena en la base de datos.
+ * @property {number} dni - de la persona
+ * @property {string} nombre - El nombre de la persona
+ * @property {string} apellido - El apellido de la persona.
+ * @property {string} telefono - telefono de la persona.
+ * @property {string} direccion - La direccion de  la persona.
+ * @property {string} genero - género de la persona.
+ * @property {string} email - El correo electronico de la persona.
+ * @property {string} id_mascota - id de la mascota a adoptar
+ * @property {string} dni_rescatista - dni del rescatista
  */
 
 // Definir la estructura de la tabla rescatista
-const Rescatista = db.define('rescatistas', {
+const Adopcion = db.define('adopciones', {
+  id_adopcion : {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    unique: true
+  },
   dni: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -48,9 +55,6 @@ const Rescatista = db.define('rescatistas', {
       },
       notEmpty: {
         msg: 'Este campo no puede estar vacío'
-      },
-      isAlpha: {
-        msg: 'El nombre solo debe contener letras'
       }
     }
   },
@@ -64,9 +68,6 @@ const Rescatista = db.define('rescatistas', {
       },
       notEmpty: {
         msg: 'Este campo no puede estar vacío'
-      },
-      isAlpha: {
-        msg: 'El apellido solo debe contener letras'
       }
     }
   },
@@ -126,43 +127,32 @@ const Rescatista = db.define('rescatistas', {
       }
     }
   },
-  passw: {
-    type: Sequelize.STRING,
+  id_mascota: {
+    type: Sequelize.INTEGER,
     allowNull: false,
-    validate: {
-      notEmpty: {
-        msg: 'Este campo no puede estar vacío'
-      },
-      len: {
-        args: [8, 100],
-        msg: 'La contraseña debe tener al menos 8 caracteres'
-      },
-      validaPassw(valor) {
-        if (!/[A-Z]/.test(valor)) {
-          throw new Error('La contraseña debe contener al menos una letra mayúscula');
-        }
-        if (!/[a-z]/.test(valor)) {
-          throw new Error('La contraseña debe contener al menos una letra minúscula');
-        }
-        if (!/\d/.test(valor)) {
-          throw new Error('La contraseña debe contener al menos un número');
-        }
-        if (!/[!@#$%^&*.,:;?+=\-*/=%&^_~|\\()[\]{}"']/.test(valor)) {
-          throw new Error('La contraseña debe contener al menos un carácter especial');
-        }
-      }
+    references: {
+        model: 'mascotas',
+        key: 'id'
+    }
+  },
+  dni_rescatista: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+        model: 'rescatistas',
+        key: 'dni'
     }
   }
 }, {
   timestamps: false
 });
 
-// Rescatista.sync({ force: false })
+// Adopcion.sync({ force: false })
 //   .then(() => {
-//     console.log('Modelo de Rescatista sincronizado correctamente');
+//     console.log('Modelo de Adopcion sincronizado correctamente');
 //   })
 //   .catch(err => {
-//     console.error('Error al sincronizar el Modelo de Rescatista:', err);
+//     console.error('Error al sincronizar el Modelo de Adopcion:', err);
 //   });
 
-module.exports = Rescatista;
+module.exports = Adopcion;

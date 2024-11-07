@@ -5,6 +5,10 @@ const cors = require('cors');
 
 const cookieParser = require('cookie-parser');
 
+const MascotaM = require('./models/modelMascotas');
+const RescatistaM = require('./models/modelRescatistas');
+const AdopM = require('./models/modelAdopcion');
+
 // Confuguración de los middlewares
 app.use(
     cors({
@@ -28,6 +32,10 @@ app.use('/rescatistas', rescatistas);
 const mascotas = require('./rutas/mascotas');
 app.use('/mascotas', mascotas);
 
+// Ruta Adopcion
+const adopciones = require('./rutas/adopcion');
+app.use('/adopcion', adopciones);
+
 // en discusion
 // Ruta PERSONAS
 // const personas = require('./rutas/personas');
@@ -41,6 +49,25 @@ app.use('/mascotas', mascotas);
 app.get('/', (req, res) => {
   res.send('Bienvenidos al inicio de la página RIAB');
 });
+
+
+
+// Sincronizar modelos
+(async () => {
+  try {
+      await MascotaM.sync({ force: false });
+      console.log('Mascotas sincronizado correctamente');
+      
+      await RescatistaM.sync({ force: false });
+      console.log('Rescatistas sincronizado correctamente');
+      
+      await AdopM.sync({ force: false });
+      console.log('Adopciones sincronizado correctamente');
+      
+  } catch (err) {
+      console.error('Error al sincronizar:', err);
+  }
+})();
 
 // Mensaje por consola de que todo anda joya
 app.listen(3000, () => {
