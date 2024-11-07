@@ -28,10 +28,6 @@ const crearMascotas = async (req, res) => {
       message: 'Error interno del servidor'
     });
   }
-  //const nuevaMascota = await mascotas.create(req.body);
-  // const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
-  // const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
-  // res.json(mascota);
 };
 
 // Obtener todas las mascotas
