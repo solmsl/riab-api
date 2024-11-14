@@ -62,6 +62,15 @@ const mascotas = sequelize.define('mascotas', {
         msg: 'El campo año de nacimiento no puede estar vacío'
       },
     }
+  },
+  centro: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'El centro no puede estar vacío'
+      },
+    }
   }
 }, { timestamps: false });
 
