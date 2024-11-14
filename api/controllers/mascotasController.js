@@ -13,8 +13,27 @@ const validarMascota = [
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
   try {
-    const {nombreApodo, especie, raza, color, anioNacimiento} = req.body;
-    const mascota = await mascotas.create ({nombreApodo, especie, raza, color, anioNacimiento});  
+    // No se pasa el id porque es autoincrementable
+    const { nombreApodo, especie, raza, color, anioNacimiento } = req.body;
+
+    // Validación de campos
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Datos inválidos',
+        errors: errores.array()
+      });
+    }
+
+    // Crear la nueva mascota (sin el campo 'id' ya que es autoincrementable)
+    const mascota = await mascotas.create({
+      nombreApodo,
+      especie,
+      raza,
+      color,
+      anioNacimiento
+    });
 
     return res.status(200).json({
       success: true,
