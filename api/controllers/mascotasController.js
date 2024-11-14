@@ -7,15 +7,14 @@ const validarMascota = [
   body('especie').notEmpty().withMessage('La especie es requerida.'),
   body('raza').notEmpty().withMessage('La raza es requerida.'),
   body('color').notEmpty().withMessage('El color es requerido.'),
-  body('anioNacimiento').notEmpty().withMessage('El año de nacimiento es requerido.'),
-  body('centro').notEmpty().withMessage('El centro es requerido.'),
+  body('anioNacimiento').notEmpty().withMessage('El año de nacimiento es requerido.')
 ];
 
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
   try {
     // No se pasa el id porque es autoincrementable
-    const { nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
+    const { nombreApodo, especie, raza, color, anioNacimiento } = req.body;
 
     // Validación de campos
     const errores = validationResult(req);
@@ -33,8 +32,7 @@ const crearMascotas = async (req, res) => {
       especie,
       raza,
       color,
-      anioNacimiento,
-      centro
+      anioNacimiento
     });
 
     return res.status(200).json({
