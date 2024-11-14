@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { CLIENT_PROTOCOL_41 } = require('mysql/lib/protocol/constants/client');
 
 const mascotas = sequelize.define('mascotas', {
   id: {
@@ -60,6 +61,15 @@ const mascotas = sequelize.define('mascotas', {
     validate: {
       notEmpty: {
         msg: 'El campo año de nacimiento no puede estar vacío'
+      },
+    }
+  }
+  centro: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'El centro no puede estar vacío'
       },
     }
   }
