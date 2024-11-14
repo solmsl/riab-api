@@ -7,8 +7,8 @@ const validarMascota = [
   body('especie').notEmpty().withMessage('La especie es requerida.'),
   body('raza').notEmpty().withMessage('La raza es requerida.'),
   body('color').notEmpty().withMessage('El color es requerido.'),
-  body('anioNacimiento').notEmpty().withMessage('El año de nacimiento es requerido.')
-  body('centro').notEmpty().withMessage('El centro es requerido.')
+  body('anioNacimiento').notEmpty().withMessage('El año de nacimiento es requerido.'),
+  body('centro').notEmpty().withMessage('El centro es requerido.'),
 ];
 
 // Crear nueva mascota
@@ -33,7 +33,7 @@ const crearMascotas = async (req, res) => {
       especie,
       raza,
       color,
-      anioNacimiento
+      anioNacimiento,
       centro
     });
 
