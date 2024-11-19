@@ -8,6 +8,15 @@ const mascotas = sequelize.define('mascotas', {
     primaryKey: true,
     autoIncrement: true
   },
+  imagen:{
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'El campo imagen no puede estar vacío'
+      }
+    }
+  },
   nombreApodo: {
     type: DataTypes.STRING,
     allowNull: false,
