@@ -1,9 +1,9 @@
-import multer from 'multer';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// import multer from 'multer';
+const multer = require('multer');
+const path = require('path');
 
 // Poner la ubicacion de la carpeta de Uploads correspondiente, en este caso se ubica dentro del SRC
-const uploadDir = join(__dirname, "../images");
+const uploadDir = path.join(__dirname, "../images");
 
 // Se define donde se va a ubicar el archivo que vamos a subir y el nombre, este se puede modificar, en este caso el nombre que se le va a asignar es la fecha de subida sumado del nombre del archivo original
 const storage = multer.diskStorage({
@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`)
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
 
@@ -29,4 +29,5 @@ const multerUpload = multer({
     storage: storage,
     fileFilter: fileFilter
 });
+
 module.exports= multerUpload;

@@ -1,6 +1,8 @@
 const { body, validationResult } = require('express-validator');
 const mascotas = require('../models/modelMascotas');
-import fs from 'fs';
+// import fs from 'fs';
+const fs = require('fs');
+
 // Validaciones para crear y actualizar una mascota
 const validarMascota = [
   body('nombreApodo').notEmpty().withMessage('El nombre o apodo es requerido.'),
