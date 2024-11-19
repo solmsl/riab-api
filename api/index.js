@@ -14,6 +14,7 @@ app.use(
       credentials: true,
       origin: "https://riab-project.vercel.app",
       methods: "GET,OPTIONS,PUT,PATCH,POST,DELETE",
+      allowedHeaders: ['Content-Type', 'Authorization']
     })
   );
 
