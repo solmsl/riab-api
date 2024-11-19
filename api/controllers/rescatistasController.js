@@ -57,7 +57,7 @@ const crear = async (req, res) => {
     //buscamos si el email ya está en uso en la base de datos
     const emailUsado = await Rescatista.findOne({ where: { email: email } });
     if (emailUsado) {
-      return res.status(400).json({ error: "Email ya está en uso" });
+      return res.status(400).json({ error: "El Email ya está en uso" });
     }
 
     //confirmar contraseña
