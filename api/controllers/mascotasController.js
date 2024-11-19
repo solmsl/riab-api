@@ -17,8 +17,9 @@ const validarMascota = [
 const crearMascotas = async (req, res) => {
   try {
     // Validar imagenes
-    const imageFile = req.file.path;
-    const extension = imageFile.split('.').pop();
+    const {imagen,nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
+    // const imageFile = req.file;
+    const extension = imagen.split('.').pop();
     const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
     if (!extensionesPermitidas.includes(extension)) {
         console.error('Extensión de archivo no permitida');
@@ -28,9 +29,8 @@ const crearMascotas = async (req, res) => {
         folder: 'Mascotas',
     });
 
-    const imagen = result.secure_url;
+    const imagenURL = result.secure_url;
     // No se pasa el id porque es autoincrementable
-    const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
 
     // Validación de campos
     const errores = validationResult(req);
@@ -44,7 +44,7 @@ const crearMascotas = async (req, res) => {
 
     // Crear la nueva mascota (sin el campo 'id' ya que es autoincrementable)
     const mascota = await mascotas.create({
-      imagen,
+      imagenURL,
       nombreApodo,
       especie,
       raza,
