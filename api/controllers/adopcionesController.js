@@ -52,7 +52,7 @@ const crear = async (req, res) => {
       // retornamos las VALIDACIONES del Modelo "Adopciones" en formato json
       if (error.name === 'SequelizeValidationError') {
         const errores = error.errors.map(err => err.message);
-        return res.status(400).json({ error: errores });
+        return res.status(400).json({ message: 'Validación fallida', errors: errores });
       }
 
       console.error('Error al crear la adopcion:', error);
