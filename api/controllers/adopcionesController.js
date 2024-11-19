@@ -56,10 +56,10 @@ const crear = async (req, res) => {
       }
 
       console.error('Error al crear la adopcion:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Error interno del servidor'
-      });
+      // return res.status(500).json({
+      //   success: false,
+      //   message: 'Error interno del servidor'
+      // });
     }
 };
 
