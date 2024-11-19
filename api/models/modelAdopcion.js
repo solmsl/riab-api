@@ -133,11 +133,19 @@ const Adopcion = db.define('adopciones', {
     references: {
         model: 'mascotas',
         key: 'id'
+    },
+    validate:{
+      notEmpty: { msg: 'El ID de la mascota no puede estar vacío' },
+      isInt: { msg: 'El ID de la mascota debe ser un número entero' },
     }
   },
   dni_rescatista: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'El DNI del rescatista no puede estar vacío' },
+      isNumeric: { msg: 'El DNI del rescatista debe contener solo números' },
+    },
     references: {
         model: 'rescatistas',
         key: 'dni'
@@ -146,13 +154,5 @@ const Adopcion = db.define('adopciones', {
 }, {
   timestamps: false
 });
-
-// Adopcion.sync({ force: false })
-//   .then(() => {
-//     console.log('Modelo de Adopcion sincronizado correctamente');
-//   })
-//   .catch(err => {
-//     console.error('Error al sincronizar el Modelo de Adopcion:', err);
-//   });
 
 module.exports = Adopcion;

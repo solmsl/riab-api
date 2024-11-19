@@ -46,6 +46,7 @@ const obtener = async (req, res) => {
       data: objResc
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({error: "Internal Server Error"})
   }
 }
