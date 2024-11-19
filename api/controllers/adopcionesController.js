@@ -21,21 +21,27 @@ const obtenerTodos = async (req, res) => {
 
 const crear = async (req, res) => {
     try {
+      console.log("Datos recibidos:", req.body); 
       const {dni, nombre, apellido, telefono, direccion, genero, email, id_mascota, dni_rescatista} = req.body;
 
       //validamos si existe la mascota en la db
+
+      console.log("Verificando si la mascota existe...");
       const mascota = await Mascota.findByPk(id_mascota);
       if (!mascota) {
-          return res.status(404).json({ 
+        console.log("La mascota no existe.");
+          return res.status(400).json({ 
               success: false, 
               message: 'La mascota especificada no existe en la base de datos.' 
           });
       }
 
+      console.log("Verificando si el rescatista existe...");
       //validamos si existe el rescatista en la db
       const rescatista = await Rescatista.findOne({ where: { dni: dni_rescatista } });
       if (!rescatista) {
-          return res.status(404).json({ 
+          console.log("El rescatista no existe.");
+          return res.status(400).json({ 
               success: false, 
               message: 'El rescatista especificado no existe en la base de datos.' 
           });
@@ -52,14 +58,12 @@ const crear = async (req, res) => {
       // retornamos las VALIDACIONES del Modelo "Adopciones" en formato json
       if (error.name === 'SequelizeValidationError') {
         const errores = error.errors.map(err => err.message);
-        return res.status(400).json({ message: 'Validación fallida', errors: errores });
+        console.error("Errores de validación:", errores);
+        return res.status(400).json({ error: errores });
       }
-
-      console.error('Error al crear la adopcion:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Error interno del servidor'
-      });
+  
+      console.error("Error inesperado:", error);
+      return res.status(500).json({error: "Internal Server Error"})
     }
 };
 
