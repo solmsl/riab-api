@@ -32,71 +32,97 @@
 
 // module.exports= multerUpload;
 
-const { v2: cloudinary } = require('cloudinary');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+//---------------------------------------------------------ejemplo 2
+// const { v2: cloudinary } = require('cloudinary');
+// const multer = require('multer');
+// const path = require('path');
+// const fs = require('fs');
 
-//configuración de Cloudinary
+// //configuración de Cloudinary
+// cloudinary.config({
+//     cloud_name: 'dhr3ewnzn',
+//     api_key: '588332998652531',
+//     api_secret: '3SLVPLYfItuSt2qzsBaggNDk5WQ'
+// });
+
+// // Ruta absoluta para evitar problemas en entornos como AWS Lambda o contenedores
+// const uploadDir = path.resolve(__dirname, '../uploads');
+
+// // Crear carpeta si no existe
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
+// // Carpeta temporal
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         const uploadDir = path.join(__dirname, '../uploads');
+//         if (!fs.existsSync(uploadDir)) {
+//             fs.mkdirSync(uploadDir, { recursive: true });
+//         }
+//         cb(null, uploadDir);
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, `${Date.now()}-${file.originalname}`);
+//     },
+// });
+
+// const fileFilter = (req, file, cb) => {
+//     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+//     if (allowedTypes.includes(file.mimetype)) {
+//         cb(null, true);
+//     } else {
+//         cb(new Error('Invalid file type. Only PNG, JPEG, and JPG files are allowed.'));
+//     }
+// };
+
+// const upload = multer({ storage, fileFilter });
+
+
+// //middleware de subida
+// const uploadToCloudinary = async (req, res, next) => {
+//     if (!req.file || !req.file.path) {
+//         return res.status(400).send('No se subió ningún archivo.');
+//     }
+
+//     try {
+//         const result = await cloudinary.uploader.upload(req.file.path, {
+//             folder: 'mascotas',
+//         });
+
+//         req.file.cloudinaryUrl = result.secure_url;
+
+//         fs.unlinkSync(req.file.path); // Eliminar archivo temporal
+
+//         next();
+//     } catch (error) {
+//         console.error('Error al subir a Cloudinary:', error);
+//         res.status(500).send('Error al subir la imagen.');
+//     }
+// };
+
+// module.exports = { upload, uploadToCloudinary };
+//----------------------------------------------------------ejemplo3
+
+
+const { v2: cloudinary } = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+
+// Configuración de Cloudinary
 cloudinary.config({
     cloud_name: 'dhr3ewnzn',
     api_key: '588332998652531',
     api_secret: '3SLVPLYfItuSt2qzsBaggNDk5WQ'
 });
 
-// Ruta absoluta para evitar problemas en entornos como AWS Lambda o contenedores
-const uploadDir = path.resolve(__dirname, '../uploads');
-
-// Crear carpeta si no existe
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-// Carpeta temporal
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, '../uploads');
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'mascotas',
+        allowed_formats: ['jpg', 'png', 'jpeg'],
     },
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error('Invalid file type. Only PNG, JPEG, and JPG files are allowed.'));
-    }
-};
+const upload = multer({ storage });
 
-const upload = multer({ storage, fileFilter });
-
-
-//middleware de subida
-const uploadToCloudinary = async (req, res, next) => {
-    if (!req.file || !req.file.path) {
-        return res.status(400).send('No se subió ningún archivo.');
-    }
-
-    try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'mascotas',
-        });
-
-        req.file.cloudinaryUrl = result.secure_url;
-
-        fs.unlinkSync(req.file.path); // Eliminar archivo temporal
-
-        next();
-    } catch (error) {
-        console.error('Error al subir a Cloudinary:', error);
-        res.status(500).send('Error al subir la imagen.');
-    }
-};
-
-module.exports = { upload, uploadToCloudinary };
+module.exports = upload;

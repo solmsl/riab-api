@@ -20,18 +20,20 @@ const crearMascotas = async (req, res) => {
   try {
     // Validar imagenes
     const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
-    const imagen = req.file;
-    const extension = imagen.split('.').pop();
-    const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-    if (!extensionesPermitidas.includes(extension)) {
-        console.error('Extensión de archivo no permitida');
-        return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PNG, JPEG, y JPG');
-    }
-    const result = await cloudinary.uploader.upload(imagen, {
-        folder: 'mascotas',
-    });
+    // const imagen = req.file;
+    // const extension = imagen.split('.').pop();
+    // const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
+    // if (!extensionesPermitidas.includes(extension)) {
+    //     console.error('Extensión de archivo no permitida');
+    //     return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PNG, JPEG, y JPG');
+    // }
+    // const result = await cloudinary.uploader.upload(imagen, {
+    //     folder: 'mascotas',
+    // });
 
-    const imagenURL = result.secure_url;
+    // const imagenURL = result.secure_url;
+
+    const imagenURL = req.file.path;
     // No se pasa el id porque es autoincrementable
 
     // Validación de campos
