@@ -44,31 +44,46 @@ cloudinary.config({
     api_secret: '3SLVPLYfItuSt2qzsBaggNDk5WQ'
 });
 
-//configuración de Multer para guardar temporalmente en disco
+// Carpeta temporal
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Carpeta temporal
+        const uploadDir = path.join(__dirname, '../uploads');
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only PNG, JPEG, and JPG files are allowed.'));
+    }
+};
+
+const upload = multer({ storage, fileFilter });
+
 
 //middleware de subida
 const uploadToCloudinary = async (req, res, next) => {
-    if (!req.file) return next();
+    if (!req.file || !req.file.path) {
+        return res.status(400).send('No se subió ningún archivo.');
+    }
 
     try {
         const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'mascotas', // Carpeta en Cloudinary
+            folder: 'mascotas',
         });
 
         req.file.cloudinaryUrl = result.secure_url;
 
-        //elimina el archivo temporal después de subirlo
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(req.file.path); // Eliminar archivo temporal
 
         next();
     } catch (error) {
