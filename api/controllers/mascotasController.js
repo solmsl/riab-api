@@ -28,7 +28,7 @@ const crearMascotas = async (req, res) => {
         return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PNG, JPEG, y JPG');
     }
     const result = await cloudinary.uploader.upload(imagen, {
-        folder: 'Mascotas',
+        folder: 'mascotas',
     });
 
     const imagenURL = result.secure_url;
