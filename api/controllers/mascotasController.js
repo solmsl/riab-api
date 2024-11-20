@@ -33,6 +33,8 @@ const crearMascotas = async (req, res) => {
 
     // const imagenURL = result.secure_url;
 
+    // probando req.fiel.path
+
     const imagenURL = req.file.path;
     // No se pasa el id porque es autoincrementable
 
