@@ -9,7 +9,7 @@ const multerUpload = require('../middlewares/multer');
 // localhost:3000/mascotas/
 router.get('/', controladorMascota.getAllMascotas);
 router.get('/:id', controladorMascota.getMascotaById);
-router.post('/registro',upload.single('file'), controladorMascota.crearMascotas);
+router.post('/registro',upload.single('imagen'), controladorMascota.crearMascotas);
 router.put('/:id', controladorMascota.actualizarMascota);
 router.delete('/:id', controladorMascota.eliminarMascota);
 
