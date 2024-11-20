@@ -58,7 +58,7 @@ const crearMascotas = async (req, res) => {
       anioNacimiento,
       centro
     });
-    fs.unlinkSync(imageFile); // Eliminar el archivo local
+    // fs.unlinkSync(imageFile);
     return res.status(200).json({
       success: true,
       message: 'Mascota creada con éxito!!',
