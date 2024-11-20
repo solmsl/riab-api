@@ -44,6 +44,13 @@ cloudinary.config({
     api_secret: '3SLVPLYfItuSt2qzsBaggNDk5WQ'
 });
 
+// Ruta absoluta para evitar problemas en entornos como AWS Lambda o contenedores
+const uploadDir = path.resolve(__dirname, '../uploads');
+
+// Crear carpeta si no existe
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 // Carpeta temporal
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
