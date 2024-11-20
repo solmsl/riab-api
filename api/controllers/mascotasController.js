@@ -18,27 +18,14 @@ const validarMascota = [
 // Crear nueva mascota
 const crearMascotas = async (req, res) => {
   try {
-    // Validar imagenes
     const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
-    // const imagen = req.file;
-    // const extension = imagen.split('.').pop();
-    // const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-    // if (!extensionesPermitidas.includes(extension)) {
-    //     console.error('Extensión de archivo no permitida');
-    //     return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PNG, JPEG, y JPG');
-    // }
-    // const result = await cloudinary.uploader.upload(imagen, {
-    //     folder: 'mascotas',
-    // });
-
-    // const imagenURL = result.secure_url;
 
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'mascotas',
     });
     const imagen = result.secure_url;
 
-    // Validación de campos
+    //validación de campos
     const errores = validationResult(req);
     if (!errores.isEmpty()) {
       return res.status(400).json({
@@ -48,7 +35,7 @@ const crearMascotas = async (req, res) => {
       });
     }
 
-    // Crear la nueva mascota (sin el campo 'id' ya que es autoincrementable)
+    //crear la nueva mascota (sin el campo 'id' ya que es autoincrementable)
     const mascota = await mascotas.create({
       imagen,
       nombreApodo,
@@ -58,7 +45,6 @@ const crearMascotas = async (req, res) => {
       anioNacimiento,
       centro
     });
-    // fs.unlinkSync(imageFile);
     return res.status(200).json({
       success: true,
       message: 'Mascota creada con éxito!!',
