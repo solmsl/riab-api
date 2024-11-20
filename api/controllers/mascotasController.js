@@ -33,7 +33,9 @@ const crearMascotas = async (req, res) => {
 
     // const imagenURL = result.secure_url;
 
-    const imagenURL = req.file.path;
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'mascotas',
+  });
 
     // Validación de campos
     const errores = validationResult(req);
