@@ -1,6 +1,8 @@
 const { body, validationResult } = require('express-validator');
 const mascotas = require('../models/modelMascotas');
-// import fs from 'fs';
+const cloudinary = require('../config/cloudinary');
+
+console.log (cloudinary ? 'anda' : 'no anda cloduinary');
 const fs = require('fs');
 
 // Validaciones para crear y actualizar una mascota
@@ -17,15 +19,15 @@ const validarMascota = [
 const crearMascotas = async (req, res) => {
   try {
     // Validar imagenes
-    const {imagen,nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
-    // const imageFile = req.file;
+    const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
+    const imagen = req.file;
     const extension = imagen.split('.').pop();
     const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
     if (!extensionesPermitidas.includes(extension)) {
         console.error('Extensión de archivo no permitida');
         return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PNG, JPEG, y JPG');
     }
-    const result = await cloudinary.uploader.upload(imageFile, {
+    const result = await cloudinary.uploader.upload(imagen, {
         folder: 'Mascotas',
     });
 
