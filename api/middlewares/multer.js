@@ -101,7 +101,6 @@
 // };
 
 // module.exports = { upload, uploadToCloudinary };
-//----------------------------------------------------------ejemplo3
 
 
 const { v2: cloudinary } = require('cloudinary');
