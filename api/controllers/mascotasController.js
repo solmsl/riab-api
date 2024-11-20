@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 const mascotas = require('../models/modelMascotas');
-const cloudinary = require('../config/cloudinary');
+const cloudinary = require('../config/cloudinary_config');
 
 console.log (cloudinary ? 'anda' : 'no anda cloduinary');
 const fs = require('fs');
