@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     }
 });
 
-// El siguiente filtro es para que se suban unicamente archivos con extensiones especificas. En este caso serian JPEG, PNG y JPG
+// El siguiente filtro es para que se suban unicamente archivos con extensiones especificas. En este caso serian JPEG, PNG y JPG.
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     if (allowedTypes.includes(file.mimetype)) {
