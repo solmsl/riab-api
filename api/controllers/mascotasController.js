@@ -35,7 +35,8 @@ const crearMascotas = async (req, res) => {
 
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'mascotas',
-  });
+    });
+    const imagen = result.secure_url;
 
     // Validación de campos
     const errores = validationResult(req);
@@ -49,7 +50,7 @@ const crearMascotas = async (req, res) => {
 
     // Crear la nueva mascota (sin el campo 'id' ya que es autoincrementable)
     const mascota = await mascotas.create({
-      imagenURL,
+      imagen,
       nombreApodo,
       especie,
       raza,
