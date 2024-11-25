@@ -50,6 +50,7 @@ const crear = async (req, res) => {
       const adop = await Adopcion.create ({dni, nombre, apellido, telefono, direccion, genero, email, id_mascota, dni_rescatista});  
   
       return res.status(200).json({
+        ok: true,
         success: true,
         message: 'Adopcion creada con éxito!',
         data: adop
