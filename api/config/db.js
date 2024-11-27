@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize-cockroachdb");
+const { Sequelize } = require("sequelize");
 const { pg } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config({path: "./vars/.env"});
