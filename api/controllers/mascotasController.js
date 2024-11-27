@@ -22,6 +22,7 @@ const crearMascotas = async (req, res) => {
 
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'mascotas',
+      public_id: nombreApodo,
     });
     const imagen = result.secure_url;
 
@@ -137,6 +138,10 @@ const actualizarMascota = async (req, res) => {
 const eliminarMascota = async (req, res) => {
   const { id } = req.params;
   try {
+    const mascota = await mascotas.findOne({
+      where: { id }
+    });
+    cloudinary.uploader.destroy(mascota.nombreApodo, function(result) { console.log(result) });
     const deleted = await mascotas.destroy({
       where: { id }
     });
