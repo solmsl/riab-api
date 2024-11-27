@@ -138,10 +138,10 @@ const actualizarMascota = async (req, res) => {
 const eliminarMascota = async (req, res) => {
   const { id } = req.params;
   try {
-    const usuario = await Usuario.findOne({
+    const mascota = await mascotas.findOne({
       where: { id }
     });
-    cloudinary.uploader.destroy(usuario.nombreApodo, function(result) { console.log(result) });
+    cloudinary.uploader.destroy(mascota.nombreApodo, function(result) { console.log(result) });
     const deleted = await mascotas.destroy({
       where: { id }
     });
