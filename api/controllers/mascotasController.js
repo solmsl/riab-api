@@ -20,14 +20,14 @@ const crearMascotas = async (req, res) => {
   try {
     const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
 
-    // const result = await cloudinary.uploader.upload(req.file.path, {
-    //   folder: 'mascotas',
-    //   public_id: nombreApodo,
-    // });
-    // const imagen = result.secure_url;
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'mascotas',
+      public_id: nombreApodo,
+    });
+    const imagen = result.secure_url;
 
     //validación de campos
-    const imagen=req.file.path;
+    // const imagen=req.files.path;
     const errores = validationResult(req);
     if (!errores.isEmpty()) {
       return res.status(400).json({

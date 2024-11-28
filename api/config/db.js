@@ -3,7 +3,7 @@ const { pg } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config({path: "./vars/.env"});
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize('postgresql://sole:try1nQB6z9dSwvzvDbUWDA@riab-cluster-4200.j77.aws-us-east-1.cockroachlabs.cloud:26257/riab-bd?sslmode=verify-full', {
   dialect: 'postgres',
   dialectModule: pg,
 });
