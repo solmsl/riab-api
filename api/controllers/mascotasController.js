@@ -2,8 +2,8 @@ const { body, validationResult } = require('express-validator');
 const mascotas = require('../models/modelMascotas');
 const cloudinary = require('../config/cloudinary_config');
 
-// const upload = require('../middlewares/multer');
-// upload.single('imagen')
+//importamos middleware multer
+const upload = require('../middleware/multer');
 console.log (cloudinary ? 'anda' : 'no anda cloduinary');
 const fs = require('fs');
 
@@ -22,11 +22,8 @@ const crearMascotas = async (req, res) => {
   try {
     const {nombreApodo, especie, raza, color, anioNacimiento, centro } = req.body;
 
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'mascotas',
-      public_id: nombreApodo,
-    });
-    const imagen = result.secure_url;
+    upload.single('image');
+    const imagen = req.file.path;
 
     //validación de campos
     // const imagen=req.file.path;
