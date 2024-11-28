@@ -8,6 +8,7 @@ const storage = new CloudinaryStorage({
     params: {
         folder: 'mascotas',
         allowed_formats: ['jpg', 'png', 'jpeg'],
+        public_id: req.body.nombreApodo,
     },
 });
 
