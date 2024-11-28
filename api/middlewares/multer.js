@@ -5,12 +5,9 @@ const cloudinary = require('../config/cloudinary_config');
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: (req, file) => {
-        return {
+    params: {
             folder: 'mascotas',
             allowed_formats: ['jpg', 'jpeg', 'png'],
-            public_id: req.body.nombreApodo,
-        };
     },
 });
 
