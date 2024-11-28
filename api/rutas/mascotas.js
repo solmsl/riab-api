@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 //importamos middleware multer
-const upload = require('../middleware/multer');
+const upload = require('../middlewares/multer');
 //Importamos controlador
 const controladorMascota = require('../controllers/mascotasController')
 
