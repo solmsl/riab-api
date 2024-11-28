@@ -6,10 +6,11 @@ const cloudinary = require('../config/cloudinary_config');
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: (req, file) => {
+        const {nombreApodo} = req.body;
         return {
             folder: 'mascotas',
             allowed_formats: ['jpg', 'jpeg', 'png'],
-            public_id: req.body.nombreApodo,
+            public_id: nombreApodo, // Genera un public_id único
         };
     },
 });
