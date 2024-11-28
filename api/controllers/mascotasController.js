@@ -2,8 +2,6 @@ const { body, validationResult } = require('express-validator');
 const mascotas = require('../models/modelMascotas');
 const cloudinary = require('../config/cloudinary_config');
 
-// const upload = require('../middlewares/multer');
-// upload.single('imagen')
 console.log (cloudinary ? 'anda' : 'no anda cloduinary');
 const fs = require('fs');
 
