@@ -27,6 +27,7 @@ const crearMascotas = async (req, res) => {
     // const imagen = result.secure_url;
 
     //validación de campos
+    const imagen=req.file.path;
     const errores = validationResult(req);
     if (!errores.isEmpty()) {
       return res.status(400).json({
